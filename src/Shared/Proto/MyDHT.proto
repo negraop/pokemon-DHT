@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+package MyDHT;
+
+service DHTService {
+    rpc JoinDHT(JOIN) returns (Empty);
+    rpc OKToJoinDHT(JOIN_OK) returns (Empty);
+    rpc NotifyPredecessorAboutNewNode(NEW_NODE) returns (Empty);
+    rpc NotifySuccessorAboutLeaveDHT(LEAVE) returns (Empty);
+    rpc NotifyPredecessorAboutLeaveDHT(NODE_GONE) returns (Empty);
+    rpc StorePokemonCard(STORE) returns (Empty);
+    rpc RetrievePokemonCard(RETRIEVE) returns (Empty);
+    rpc ResponseOKRetrieve(OK) returns (Empty);
+    rpc ResponseNotFoundRetrieve(NOT_FOUND) returns (Empty);
+    rpc TransferPokemonCard(TRANSFER) returns (Empty);
+}
+
+message Empty { }
+
+message Node {
+    bytes id = 1;
+    string ip = 2;
+    int32 port = 3;
+}
+
+message JOIN {
+    Node node = 1;
+}
+
+message JOIN_OK {
+    Node successor = 1;
+    Node predecessor = 2;
+}
+
+message NEW_NODE {
+    Node newSuccessor = 1;
+}
+
+message LEAVE {
+    Node newPredecessor = 1;
+}
+
+message NODE_GONE {
+    Node newSuccessor = 1;
+}
+
+message STORE {
+    bytes id = 1;
+    string fileName = 2; // Fiz uma alteracao nessa mensagem para funcionar no meu projeto
+    bytes value = 3;
+}
+
+message RETRIEVE {
+    bytes id = 1;
+    string fileName = 2; // Fiz uma alteracao nessa mensagem para funcionar no meu projeto
+    Node retrieverNode = 3;
+}
+
+message OK {
+    STORE pokemonCard = 1;
+}
+
+message NOT_FOUND { }
+
+message TRANSFER {
+    STORE transfer = 1;
+}
